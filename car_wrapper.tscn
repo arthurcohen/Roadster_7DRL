@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbo0hpq4xjl0a"]
+
+[ext_resource type="Script" path="res://car_wrapper.gd" id="1_uamjf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fthlw"]
+albedo_color = Color(1, 0.211765, 0.211765, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kaasd"]
+material = SubResource("StandardMaterial3D_fthlw")
+size = Vector3(2, 1, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mkqlw"]
+size = Vector3(1.8, 0.9, 3.8)
+
+[node name="CarWrapper" type="Node3D"]
+script = ExtResource("1_uamjf")
+
+[node name="Body" type="RigidBody3D" parent="."]
+collision_layer = 2
+collision_mask = 3
+mass = 100.0
+center_of_mass_mode = 1
+center_of_mass = Vector3(2.08167e-16, -1, 2.08167e-16)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
+mesh = SubResource("BoxMesh_kaasd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
+shape = SubResource("BoxShape3D_mkqlw")
+
+[node name="Wheels" type="Node3D" parent="Body"]
+
+[node name="FR" type="RayCast3D" parent="Body/Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.4, 1.5)
+target_position = Vector3(2.08165e-12, -2, 2.08165e-12)
+collision_mask = 5
+
+[node name="FL" type="RayCast3D" parent="Body/Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.4, 1.5)
+target_position = Vector3(2.08165e-12, -2, 2.08165e-12)
+collision_mask = 5
+
+[node name="RR" type="RayCast3D" parent="Body/Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.4, -1.5)
+target_position = Vector3(0, -2, 0)
+collision_mask = 5
+
+[node name="RL" type="RayCast3D" parent="Body/Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.4, -1.5)
+target_position = Vector3(0, -2, 0)
+collision_mask = 5
