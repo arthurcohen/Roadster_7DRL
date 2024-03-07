@@ -1,21 +1,40 @@
 extends Camera3D
 
-@export var target: Node3D
+@export var targetToFollow: Node3D
+@export var targetToFollowLookWeight: float = 3.0
+@export var targetsToLook: Array[Node3D]
 @export var nodeQuery: String
 @export var distance = 7
 @export var height = 4
 
-var targetNode
+var targetToFollowNode: Node3D
+var targetsToLookNodes: Array[Node3D] = []
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	targetNode = target.get_node(nodeQuery)
+	targetToFollowNode = targetToFollow.get_node(nodeQuery)
+	
+	for index in range(targetsToLook.size()):
+		targetsToLookNodes.append(targetsToLook[index].get_node(nodeQuery))
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	if targetNode != null:
-		var desiredPosition = targetNode.global_position - ((targetNode.global_position - global_position).normalized() * distance)
-		var newPosition = lerp(global_position, Vector3(target.global_position.x + desiredPosition.x, targetNode.global_position.y + height, target.global_position.z + desiredPosition.z), 0.07)
-		global_position = newPosition
+	var lookAxis = Input.get_axis("look_left", "look_right")
+	
+	var lockedOn = targetsToLookNodes.size() > 0
+
+	if targetToFollowNode != null:
+		var lookAtPosition = targetToFollowNode.global_position * targetToFollowLookWeight # add weight to the target to follow
 		
-		look_at(targetNode.global_position)
+		for targetToLookNode in targetsToLookNodes:
+			lookAtPosition += targetToLookNode.global_position
+		
+		var desiredPosition = targetToFollowNode.global_position - global_position													# position camera relative to target to follow
+		desiredPosition -= (lookAtPosition if lockedOn else Vector3.ZERO)															# offset by targets to look
+		desiredPosition += global_transform.basis.x * lookAxis * 10 																# rotate if axis
+		desiredPosition = targetToFollowNode.global_position - desiredPosition.normalized() * distance * (2 if lockedOn else 1) 	# normalize by distance
+		desiredPosition.y = targetToFollowNode.global_position.y + height * (2 if lockedOn else 1)									# add height
+		
+		var newPosition = lerp(global_position, Vector3(desiredPosition.x, desiredPosition.y, desiredPosition.z), 0.07)
+		global_position = newPosition # positionate camera
+
+		lookAtPosition /= targetsToLookNodes.size() + targetToFollowLookWeight
+		look_at(lookAtPosition) # rotate camera

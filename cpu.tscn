@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://be4m7ikvu4vbd"]
+
+[ext_resource type="Script" path="res://cpu_controller.gd" id="1_qb2ey"]
+[ext_resource type="PackedScene" uid="uid://dbo0hpq4xjl0a" path="res://car_wrapper.tscn" id="1_tmi6m"]
+
+[node name="CPU" type="Node3D"]
+script = ExtResource("1_qb2ey")
+
+[node name="CarWrapper" parent="." instance=ExtResource("1_tmi6m")]
