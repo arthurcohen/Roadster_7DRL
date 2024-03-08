@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwth5yxte60ca"]
+[gd_scene load_steps=8 format=3 uid="uid://dwth5yxte60ca"]
 
 [ext_resource type="Script" path="res://map/CustomGeneration.gd" id="1_wsg3l"]
 [ext_resource type="MeshLibrary" uid="uid://dfvkvdtfcle72" path="res://map/tileset.tres" id="2_753qg"]
@@ -6,6 +6,26 @@
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ajmnp"]
 seed = 756842482
 fractal_type = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_prevh"]
+fractal_octaves = 10
+domain_warp_type = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_nqxdc"]
+width = 1024
+height = 1024
+in_3d_space = true
+seamless = true
+seamless_blend_skirt = 1.0
+as_normal_map = true
+bump_strength = 10.5
+noise = SubResource("FastNoiseLite_prevh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v5wet"]
+albedo_color = Color(0.258824, 0.203922, 0.117647, 1)
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_nqxdc")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ec3cf"]
 _surfaces = [{
@@ -30,6 +50,7 @@ noise = SubResource("FastNoiseLite_ajmnp")
 
 [node name="Terrain" type="MeshInstance3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_v5wet")
 mesh = SubResource("ArrayMesh_ec3cf")
 
 [node name="GridMap" type="GridMap" parent="."]
