@@ -1,6 +1,6 @@
 [gd_scene load_steps=26 format=3 uid="uid://cqm0a4syn5i1l"]
 
-[ext_resource type="Script" path="res://TileGenerator.gd" id="1_pwrdu"]
+[ext_resource type="Script" path="res://map/TileGenerator.gd" id="1_pwrdu"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lk12w"]
 albedo_color = Color(0, 1, 1, 1)

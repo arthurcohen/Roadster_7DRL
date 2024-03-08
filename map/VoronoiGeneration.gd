@@ -3,10 +3,7 @@ class_name VoronoiGeneration
 extends Node
 
 @export var generate: bool = false
-@export var num_cells: int = 10
-@export var balancing_iterations: int = 5
-@export var balancing_factor: float = 2.0
-@export var balancing_padding: float = 15.0
+@export var padding: int = 10
 @export var xdim: int = 100
 @export var zdim: int = 100
 @export var grid_map: GridMap
@@ -15,7 +12,7 @@ var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	_generate()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -28,14 +25,20 @@ func _process(delta):
 
 func _generate():
 	var cells: Array[Vector3] = []
-	for i in range(num_cells):
-		cells.append(_random_point())
-		
-	_balance(cells)
 	
-	#var regions: Array[int] = []
-	#for i in range(num_cells):
-	#	regions.append(rng.randi_range(0, 2))
+	var grass_region_start = _random_point(Vector2(xdim/5, zdim/5), 5)
+	var grass_region_boss = _random_point(Vector2(xdim/3, zdim/3), 10)
+	var sand_region_start = _random_point(Vector2(4*xdim/5, 3*zdim/5), 10) 
+	var sand_region_boss = _random_point(Vector2(4*xdim/5, zdim/5), 10)
+	var mountain_region_start = _random_point(Vector2(3*xdim/5, 4*zdim/5), 10)
+	var mountain_region_boss = _random_point(Vector2(xdim/5, 4*zdim/5), 10)
+	
+	cells.append(grass_region_start)
+	cells.append(grass_region_boss)
+	cells.append(sand_region_start)
+	cells.append(sand_region_boss)
+	cells.append(mountain_region_start)
+	cells.append(mountain_region_boss)
 	
 	for x in range(xdim):
 		for z in range(zdim):
@@ -43,9 +46,12 @@ func _generate():
 			var index = _find_nearest(cells, point)
 			grid_map.set_cell_item(point, index)
 	
-func _random_point():
-	var x = rng.randi_range(0, xdim)
-	var z = rng.randi_range(0, zdim)
+func _random_point(center: Vector2, radius: float) -> Vector3:
+	var diag = Vector2(radius, radius)
+	var bottom_left = center - diag
+	var top_right = center + diag
+	var x = rng.randf_range(bottom_left.x, top_right.x)
+	var z = rng.randf_range(bottom_left.y, top_right.y)
 	return Vector3(x, 0, z)
 
 func _find_nearest(cells: Array[Vector3], point: Vector3):
@@ -60,16 +66,3 @@ func _find_nearest(cells: Array[Vector3], point: Vector3):
 		
 func _norm(a: Vector3):
 	return abs(a.x) + abs(a.y) + abs(a.z)
-
-func _balance(cells: Array[Vector3]):
-	for n in range(balancing_iterations):
-		for i in range(cells.size()):
-			var displacement: Vector3 = Vector3.ZERO
-			for j in range(cells.size()):
-				if i == j:
-					continue
-				var delta = cells[i] - cells[j]
-				displacement += balancing_factor/(_norm(delta) + 0.1) * delta.normalized()
-			cells[i] += displacement
-			cells[i].x = clamp(cells[i].x, balancing_padding, xdim - balancing_padding)
-			cells[i].z = clamp(cells[i].z, balancing_padding, zdim - balancing_padding)
