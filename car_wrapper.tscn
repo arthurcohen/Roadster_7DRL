@@ -32,28 +32,28 @@ shape = SubResource("BoxShape3D_mkqlw")
 [node name="Wheels" type="Node3D" parent="Body"]
 
 [node name="FR" type="RayCast3D" parent="Body/Wheels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.4, 1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.08165e-12, 1.5)
 target_position = Vector3(2.08165e-12, -2, 2.08165e-12)
 collision_mask = 5
 
 [node name="Wheel" parent="Body/Wheels/FR" instance=ExtResource("2_1y8qi")]
 
 [node name="FL" type="RayCast3D" parent="Body/Wheels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.4, 1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2.08165e-12, 1.5)
 target_position = Vector3(2.08165e-12, -2, 2.08165e-12)
 collision_mask = 5
 
 [node name="Wheel" parent="Body/Wheels/FL" instance=ExtResource("2_1y8qi")]
 
 [node name="RR" type="RayCast3D" parent="Body/Wheels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.4, -1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.08165e-12, -1.5)
 target_position = Vector3(0, -2, 0)
 collision_mask = 5
 
 [node name="Wheel" parent="Body/Wheels/RR" instance=ExtResource("2_1y8qi")]
 
 [node name="RL" type="RayCast3D" parent="Body/Wheels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.4, -1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2.08165e-12, -1.5)
 target_position = Vector3(0, -2, 0)
 collision_mask = 5
 

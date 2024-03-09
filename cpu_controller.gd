@@ -1,7 +1,7 @@
 extends Node3D
 
 @export var cpuAwareness = 1.0 			# how cpu responds to player positioning and movement in reltion to its own position and movement
-@export var cpuAgressiviness = 1.0 		# how much the cpu tends to hit the player
+@export var cpuAgressiviness = 0.0 		# how much the cpu tends to hit the player
 @export var cpuSafeRadius = 15.0		# distance that a non-agressive cpu will keep from player
 @export var cpuSkills = 1.0 			# how good the cpu handles the car
 
@@ -30,9 +30,13 @@ func _process(delta):
 	
 	var playerDirection = cpuCarBody.global_transform.basis.z.signed_angle_to(playerCarBodyEstimatedPosition - cpuCarBody.global_position , Vector3.DOWN)
 	cpuCarWrapper.steeringAxis = clamp(playerDirection, -1, 1)
+	
+	# TODO: 
+	# if facingPlayerDirectly, be agro
+	# if backFacingPlayer, be passive
 
 	#var gasAxis = ((playerDirection / PI) ** 2) + cpuAgressiviness - (1 if distanceToPlayer < cpuSafeRadius else 0)
-	cpuCarWrapper.gasAxis = 1
+	cpuCarWrapper.gasAxis = 1 - (1 - cpuAgressiviness) * 0.5
 	
 #	DebugDraw3D.draw_line(cpuCarBody.global_position, playerCarBody.global_position, Color.LAWN_GREEN)
 #	DebugDraw3D.draw_sphere((cpuCarBody.global_position + playerCarBody.global_position * 4) / 5, 0.5, Color.RED)

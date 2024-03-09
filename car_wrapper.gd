@@ -3,7 +3,7 @@ extends Node3D
 
 @export var bodyMass = 100
 @export var wheelRadius = 0.5
-@export var suspensionRestLength = 0.5
+@export var suspensionRestLength = 0.9
 @export var suspensionMaxLength = suspensionRestLength * 2
 @export var suspensionMinLength = suspensionRestLength / 1.5
 @export var suspensionFrequency = 1250.0
