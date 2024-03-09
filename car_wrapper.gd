@@ -9,7 +9,7 @@ extends Node3D
 @export var suspensionFrequency = 1250.0
 @export var suspensionDamper = 50.0
 @export var suspensionHorizontalOffset = 0.1
-@export var maxSpeed = 20.0
+@export var maxSpeed = 40.0
 @export var turboMaxSpeedModifier = 1.5
 @export var maxTorque = 2200.0
 @export var turboTorqueModifier = 1.2
@@ -61,23 +61,24 @@ func _ready():
 	pass # Replace with function body.
 
 func _process(delta):
-	DebugDraw3D.draw_sphere(body.center_of_mass + body.global_position, wheelRadius, Color.GREEN_YELLOW)
+#	DebugDraw3D.draw_sphere(body.center_of_mass + body.global_position, wheelRadius, Color.GREEN_YELLOW)
+	for wheel in wheels:
+		resolveWheelPositions(wheel)
 
 func _physics_process(delta):
 	resolveSteering()
 	for wheel in wheels:
-		resolveWheelPositions(wheel)
 		if wheel.raycast.is_colliding():
 			resolveSuspensionForces(wheel, delta)
 			resolveAccelerationForces(wheel, delta)
 			resolveFrictionForces(wheel, delta)
-			
+
 func resolveWheelPositions(wheel):
 	var raycast: RayCast3D = wheel.raycast
 	if raycast.is_colliding():
-		raycast.get_node("Wheel").global_position = lerp(raycast.get_node("Wheel").global_position, raycast.get_collision_point() + body.global_transform.basis.y * wheelRadius, 0.15)
+		raycast.get_node("Wheel").global_position = lerp(raycast.get_node("Wheel").global_position, raycast.get_collision_point() + body.global_transform.basis.y * wheelRadius, 0.2)
 	else:
-		raycast.get_node("Wheel").global_position = lerp(raycast.get_node("Wheel").global_position, raycast.global_position - body.global_transform.basis.y * suspensionMaxLength + body.global_transform.basis.y * wheelRadius, 0.15)
+		raycast.get_node("Wheel").global_position = lerp(raycast.get_node("Wheel").global_position, raycast.global_position - body.global_transform.basis.y * suspensionMaxLength + body.global_transform.basis.y * wheelRadius, 0.1)
 
 func resolveSteering():
 	if steeringAxis != 0:

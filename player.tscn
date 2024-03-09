@@ -7,3 +7,8 @@
 script = ExtResource("1_6urqa")
 
 [node name="CarWrapper" parent="." instance=ExtResource("1_tsle1")]
+
+[node name="Body" parent="CarWrapper" index="0"]
+collision_layer = 10
+
+[editable path="CarWrapper"]
