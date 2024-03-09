@@ -1,0 +1,7 @@
+[gd_resource type="FastNoiseLite" format=3 uid="uid://4b2hpuretvs"]
+
+[resource]
+seed = 1548204712
+fractal_octaves = 2
+fractal_lacunarity = 1.0
+fractal_gain = 0.2

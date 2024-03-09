@@ -1,0 +1,6 @@
+[gd_resource type="FastNoiseLite" format=3 uid="uid://db3g5gi60iar4"]
+
+[resource]
+seed = -527519599
+fractal_octaves = 6
+fractal_weighted_strength = 0.6
