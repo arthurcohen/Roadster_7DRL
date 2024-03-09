@@ -2,6 +2,7 @@
 extends MeshInstance3D
 
 @export var generate: bool = false
+@export var collision_shape: CollisionShape3D
 @export var height_scale: float = 1
 @export var uv_scale: Vector2 = Vector2.ONE
 @export var size: int = 100
@@ -24,6 +25,9 @@ func _process(delta):
 
 func _generate():
 	noise.seed = randi()
+
+	var heightmap: PackedFloat32Array = []
+	heightmap.resize(size * size)
 	
 	surface_tool.clear()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -48,8 +52,19 @@ func _generate():
 			
 			surface_tool.set_uv(Vector2(x, z) / uv_scale)
 			surface_tool.add_vertex(vertex)
+			
+			var index = x + size/2 + (z + size/2) * size
+			heightmap[index] = height
  
 	surface_tool.generate_normals()
 	
 	self.mesh = surface_tool.commit()
+
+	var heightmapShape = HeightMapShape3D.new()
+	
+	heightmapShape.map_width = size
+	heightmapShape.map_depth = size
+	heightmapShape.map_data = heightmap
+	
+	collision_shape.shape = heightmapShape
 

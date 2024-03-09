@@ -15,7 +15,7 @@ bump_strength = 10.5
 noise = SubResource("FastNoiseLite_prevh")
 
 [resource]
-albedo_color = Color(0.521569, 0.4, 0.266667, 1)
+albedo_color = Color(0.811765, 0.592157, 0.160784, 1)
 normal_enabled = true
 normal_scale = 0.1
 normal_texture = SubResource("NoiseTexture2D_nqxdc")
