@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://du1wina67wdno"]
+
+[ext_resource type="Script" path="res://camera.gd" id="1_0svbh"]
+
+[node name="Camera" type="Camera3D" node_paths=PackedStringArray("targetToFollow", "targetsToLook")]
+transform = Transform3D(1, 0, 0, 0, 0.933173, 0.359427, 0, -0.359427, 0.933173, 0.117922, 3.01097, 8.22374)
+current = true
+script = ExtResource("1_0svbh")
+targetToFollow = NodePath("")
+targetsToLook = [NodePath("")]
+nodeQuery = "CarWrapper/Body"
