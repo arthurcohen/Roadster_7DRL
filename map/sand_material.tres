@@ -11,12 +11,11 @@ in_3d_space = true
 seamless = true
 seamless_blend_skirt = 1.0
 as_normal_map = true
-bump_strength = 10.5
 noise = SubResource("FastNoiseLite_prevh")
 
 [resource]
 albedo_color = Color(0.811765, 0.592157, 0.160784, 1)
 normal_enabled = true
-normal_scale = 0.1
+normal_scale = 0.3
 normal_texture = SubResource("NoiseTexture2D_nqxdc")
-uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_scale = Vector3(0.2, 0.2, 0.2)

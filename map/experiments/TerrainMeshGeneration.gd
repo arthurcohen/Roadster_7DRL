@@ -45,15 +45,18 @@ func _generate():
 			surface_tool.add_index(i+size+1)
 			
 	
-	for x in range(-size/2,size/2):
-		for z in range(-size/2,size/2):
+	for i in range(size):
+		for j in range(size):
+			var x = i - (size - 1.0)/2.0
+			var z = j - (size - 1.0)/2.0
+			
 			var height = noise.get_noise_2d(x, z) * height_scale
 			var vertex = Vector3(x, height, z)
 			
 			surface_tool.set_uv(Vector2(x, z) / uv_scale)
 			surface_tool.add_vertex(vertex)
 			
-			var index = x + size/2 + (z + size/2) * size
+			var index = i + j * size
 			heightmap[index] = height
  
 	surface_tool.generate_normals()
