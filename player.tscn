@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ea62hsyccl4"]
+[gd_scene load_steps=4 format=3 uid="uid://ea62hsyccl4"]
 
 [ext_resource type="Script" path="res://player_controller.gd" id="1_6urqa"]
 [ext_resource type="PackedScene" uid="uid://dbo0hpq4xjl0a" path="res://car_wrapper.tscn" id="1_tsle1"]
+[ext_resource type="Script" path="res://mirror_camera_rotation.gd" id="3_1y0uf"]
 
 [node name="Player" type="Node3D"]
 script = ExtResource("1_6urqa")
@@ -10,5 +11,8 @@ script = ExtResource("1_6urqa")
 
 [node name="Body" parent="CarWrapper" index="0"]
 collision_layer = 10
+
+[node name="AudioListener3D" type="AudioListener3D" parent="CarWrapper/Body" index="9"]
+script = ExtResource("3_1y0uf")
 
 [editable path="CarWrapper"]

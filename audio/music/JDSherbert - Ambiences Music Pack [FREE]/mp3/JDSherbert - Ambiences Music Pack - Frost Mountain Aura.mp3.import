@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://xlxdx23xwovd"
+path="res://.godot/imported/JDSherbert - Ambiences Music Pack - Frost Mountain Aura.mp3-01dccff651549c0ec4f6abdfac831e4c.mp3str"
+
+[deps]
+
+source_file="res://audio/music/JDSherbert - Ambiences Music Pack [FREE]/mp3/JDSherbert - Ambiences Music Pack - Frost Mountain Aura.mp3"
+dest_files=["res://.godot/imported/JDSherbert - Ambiences Music Pack - Frost Mountain Aura.mp3-01dccff651549c0ec4f6abdfac831e4c.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

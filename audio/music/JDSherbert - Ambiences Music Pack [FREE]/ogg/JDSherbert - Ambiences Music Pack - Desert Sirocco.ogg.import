@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://7feiiv44asiq"
+path="res://.godot/imported/JDSherbert - Ambiences Music Pack - Desert Sirocco.ogg-005c01021d7b86a88aedd1ec0efc710e.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/JDSherbert - Ambiences Music Pack [FREE]/ogg/JDSherbert - Ambiences Music Pack - Desert Sirocco.ogg"
+dest_files=["res://.godot/imported/JDSherbert - Ambiences Music Pack - Desert Sirocco.ogg-005c01021d7b86a88aedd1ec0efc710e.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -27,6 +27,9 @@ var body: RigidBody3D
 var frontBumper: Area3D
 var rearBumper: Area3D
 var roof: Area3D
+var crashSFX: AudioStreamPlayer3D
+var hitSFX: AudioStreamPlayer3D
+var criticalHitSFX: AudioStreamPlayer3D
 var gasAxis: float = 0
 var steeringAxis: float = 0
 var parkBreak: bool = false
@@ -64,6 +67,10 @@ func _ready():
 	frontBumper = body.get_node("FrontBumperArea")
 	rearBumper = body.get_node("RearBumperArea")
 	roof = body.get_node("RoofArea")
+	
+	crashSFX = body.get_node("CrashSFX")
+	hitSFX = body.get_node("HitSFX")
+	criticalHitSFX = body.get_node("CriticalHitSFX")
 	
 	body.body_entered.connect(onBodyCollision)
 
@@ -191,22 +198,40 @@ func onBodyCollision(node: Node3D):
 			# play hit sound
 			if velocityDifference.length() > 15:
 				# got hit hard
+				play_hit_sfx()
 				health -= 1
 			elif rearBumper.get_overlapping_areas().size() > 0 and velocityDifference.length() > 5:
 				# hit from behind
 				# play critical hit sound
+				play_critical_hit_sfx()
 				health -= 1
 		else:
 			# hit another car
 			# play hit sound
+			play_crash_sfx()
 			# maybe force car who hit to the ground to avoid self flipping
 			body.apply_impulse(Vector3.DOWN * 100)
 			pass
 	
 		
 	elif body.linear_velocity.length() > 10 and roof.get_overlapping_bodies().size() > 0:
+		play_hit_sfx()
 		# roof hit
 		health -= 1
 		
 	print(health)
 	
+func play_crash_sfx():
+	if not crashSFX.playing:
+		crashSFX.pitch_scale = randf_range(0.65, 0.8)
+		crashSFX.play(0)
+
+func play_hit_sfx():
+	if not hitSFX.playing:
+		hitSFX.pitch_scale = randf_range(1.2, 1.3)
+		hitSFX.play(0)
+
+func play_critical_hit_sfx():
+	if not criticalHitSFX.playing:
+		criticalHitSFX.pitch_scale = randf_range(1.2, 1.3)
+		criticalHitSFX.play(0)
