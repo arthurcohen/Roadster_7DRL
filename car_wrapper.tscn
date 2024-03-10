@@ -1,10 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://dbo0hpq4xjl0a"]
+[gd_scene load_steps=13 format=3 uid="uid://dbo0hpq4xjl0a"]
 
 [ext_resource type="Script" path="res://car_wrapper.gd" id="1_uamjf"]
 [ext_resource type="PackedScene" path="res://wheel.tscn" id="2_1y8qi"]
 [ext_resource type="AudioStream" uid="uid://dxsoss0uqbk1g" path="res://audio/sfx/592388__magnuswaker__car-crash-with-glass.wav" id="3_g3nub"]
 [ext_resource type="AudioStream" uid="uid://d3jqli0c5eryn" path="res://audio/sfx/703247__xkeril__big-falling-debris-crash.wav" id="4_r0g5a"]
 [ext_resource type="AudioStream" uid="uid://dntbjauixerc4" path="res://audio/sfx/703248__xkeril__fall-debris-crash.wav" id="4_wmio5"]
+[ext_resource type="AudioStream" uid="uid://8y4c02flow1t" path="res://audio/sfx/679693__grauxonen__t4-19td-2000-engine-loop.wav" id="6_jm6f1"]
+[ext_resource type="AudioStream" uid="uid://dlpx66rksh1xe" path="res://audio/sfx/wheels.wav" id="7_ck4b6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fthlw"]
 albedo_color = Color(1, 0.211765, 0.211765, 1)
@@ -97,16 +99,29 @@ shape = SubResource("BoxShape3D_h0dy7")
 
 [node name="CrashSFX" type="AudioStreamPlayer3D" parent="Body"]
 stream = ExtResource("3_g3nub")
+volume_db = -8.0
 max_db = 2.0
 pitch_scale = 0.65
 max_polyphony = 2
 
 [node name="HitSFX" type="AudioStreamPlayer3D" parent="Body"]
 stream = ExtResource("4_wmio5")
+volume_db = 3.0
 pitch_scale = 1.2
 max_polyphony = 2
 
 [node name="CriticalHitSFX" type="AudioStreamPlayer3D" parent="Body"]
 stream = ExtResource("4_r0g5a")
+volume_db = -1.0
 pitch_scale = 1.3
 max_polyphony = 2
+
+[node name="EngineSFX" type="AudioStreamPlayer3D" parent="Body"]
+stream = ExtResource("6_jm6f1")
+pitch_scale = 0.85
+autoplay = true
+
+[node name="WheelsSFX" type="AudioStreamPlayer3D" parent="Body"]
+stream = ExtResource("7_ck4b6")
+volume_db = 10.0
+pitch_scale = 1.2

@@ -12,7 +12,23 @@ script = ExtResource("1_6urqa")
 [node name="Body" parent="CarWrapper" index="0"]
 collision_layer = 10
 
-[node name="AudioListener3D" type="AudioListener3D" parent="CarWrapper/Body" index="9"]
+[node name="CrashSFX" parent="CarWrapper/Body" index="6"]
+attenuation_model = 3
+
+[node name="HitSFX" parent="CarWrapper/Body" index="7"]
+attenuation_model = 3
+
+[node name="CriticalHitSFX" parent="CarWrapper/Body" index="8"]
+attenuation_model = 3
+
+[node name="EngineSFX" parent="CarWrapper/Body" index="9"]
+attenuation_model = 3
+volume_db = -5.0
+
+[node name="WheelsSFX" parent="CarWrapper/Body" index="10"]
+attenuation_model = 3
+
+[node name="AudioListener3D" type="AudioListener3D" parent="CarWrapper/Body" index="11"]
 script = ExtResource("3_1y0uf")
 
 [editable path="CarWrapper"]

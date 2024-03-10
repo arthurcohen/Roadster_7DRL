@@ -30,6 +30,8 @@ var roof: Area3D
 var crashSFX: AudioStreamPlayer3D
 var hitSFX: AudioStreamPlayer3D
 var criticalHitSFX: AudioStreamPlayer3D
+var engineSFX: AudioStreamPlayer3D
+var wheelsSFX: AudioStreamPlayer3D
 var gasAxis: float = 0
 var steeringAxis: float = 0
 var parkBreak: bool = false
@@ -71,6 +73,10 @@ func _ready():
 	crashSFX = body.get_node("CrashSFX")
 	hitSFX = body.get_node("HitSFX")
 	criticalHitSFX = body.get_node("CriticalHitSFX")
+	engineSFX = body.get_node("EngineSFX")
+	wheelsSFX = body.get_node("WheelsSFX")
+	
+	engineSFX.pitch_scale = randf_range(0.8, 0.9)
 	
 	body.body_entered.connect(onBodyCollision)
 
@@ -96,6 +102,12 @@ func _physics_process(delta):
 		body.apply_torque(body.global_rotation.z * body.global_transform.basis.z * 200 * -1)
 		body.apply_torque(body.global_rotation.x * body.global_transform.basis.x * 300 * -1)
 		body.apply_torque(body.global_transform.basis.y * 200 * steeringAxis * -1)
+	
+	if wheelsOnTheGround > 0 && body.linear_velocity.length_squared() > 0:
+		play_wheels_sfx()
+	else:
+		stop_wheels_sfx()
+	
 
 func resolveWheelPositions(wheel):
 	var raycast: RayCast3D = wheel.raycast
@@ -222,16 +234,25 @@ func onBodyCollision(node: Node3D):
 	print(health)
 	
 func play_crash_sfx():
-	if not crashSFX.playing:
-		crashSFX.pitch_scale = randf_range(0.65, 0.8)
-		crashSFX.play(0)
+	_play_sfx(crashSFX, 0.65, 0.8)
 
 func play_hit_sfx():
-	if not hitSFX.playing:
-		hitSFX.pitch_scale = randf_range(1.2, 1.3)
-		hitSFX.play(0)
+	_play_sfx(hitSFX, 1.2, 1.3)
 
 func play_critical_hit_sfx():
-	if not criticalHitSFX.playing:
-		criticalHitSFX.pitch_scale = randf_range(1.2, 1.3)
-		criticalHitSFX.play(0)
+	_play_sfx(criticalHitSFX, 1.2, 1.3)
+	
+func play_wheels_sfx():
+	if not wheelsSFX.playing:
+		wheelsSFX.play(0)
+		
+	var t = inverse_lerp(0, maxSpeed, body.linear_velocity.length())
+	wheelsSFX.pitch_scale = lerp(0.9, 2.0, t)
+	
+func stop_wheels_sfx():
+	wheelsSFX.stop()
+		
+func _play_sfx(sfx: AudioStreamPlayer3D, min_pitch: float, max_pitch: float):
+	if not sfx.playing:
+		sfx.pitch_scale = randf_range(min_pitch, max_pitch)
+		sfx.play(0)
