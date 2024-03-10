@@ -1,13 +1,14 @@
 class_name CarWrapper
 extends Node3D
 
+@export var health = 3
 @export var bodyMass = 100
 @export var wheelRadius = 0.5
 @export var suspensionRestLength = 0.9
 @export var suspensionMaxLength = suspensionRestLength * 2
 @export var suspensionMinLength = suspensionRestLength / 1.5
-@export var suspensionFrequency = 1250.0
-@export var suspensionDamper = 50.0
+@export var suspensionFrequency = 1950.0
+@export var suspensionDamper = 75.0
 @export var suspensionHorizontalOffset = 0.1
 @export var maxSpeed = 40.0
 @export var turboMaxSpeedModifier = 1.5
@@ -23,6 +24,9 @@ var rlWheel: RayCast3D
 var rrWheel: RayCast3D
 var wheels: Array[Dictionary]
 var body: RigidBody3D
+var frontBumper: Area3D
+var rearBumper: Area3D
+var roof: Area3D
 var gasAxis: float = 0
 var steeringAxis: float = 0
 var parkBreak: bool = false
@@ -53,12 +57,16 @@ func _ready():
 	wheels = [
 		{"raycast": flWheel, "lastLength": suspensionRestLength - wheelRadius, "traction": true, "grip": 100, "parkBreakGripModifier": 1},
 		{"raycast": frWheel, "lastLength": suspensionRestLength - wheelRadius, "traction": true, "grip": 100, "parkBreakGripModifier": 1},
-		{"raycast": rlWheel, "lastLength": suspensionRestLength - wheelRadius, "traction": true, "grip": 80, "parkBreakGripModifier": 0.6},
-		{"raycast": rrWheel, "lastLength": suspensionRestLength - wheelRadius, "traction": true, "grip": 80, "parkBreakGripModifier": 0.6},
+		{"raycast": rlWheel, "lastLength": suspensionRestLength - wheelRadius, "traction": true, "grip": 70, "parkBreakGripModifier": 0.6},
+		{"raycast": rrWheel, "lastLength": suspensionRestLength - wheelRadius, "traction": true, "grip": 70, "parkBreakGripModifier": 0.6},
 	]
 	
+	frontBumper = body.get_node("FrontBumperArea")
+	rearBumper = body.get_node("RearBumperArea")
+	roof = body.get_node("RoofArea")
 	
-	pass # Replace with function body.
+	body.body_entered.connect(onBodyCollision)
+
 
 func _process(delta):
 #	DebugDraw3D.draw_sphere(body.center_of_mass + body.global_position, wheelRadius, Color.GREEN_YELLOW)
@@ -67,11 +75,20 @@ func _process(delta):
 
 func _physics_process(delta):
 	resolveSteering()
+	
+	var wheelsOnTheGround = 0
+
 	for wheel in wheels:
 		if wheel.raycast.is_colliding():
+			wheelsOnTheGround += 1
 			resolveSuspensionForces(wheel, delta)
-			resolveAccelerationForces(wheel, delta)
 			resolveFrictionForces(wheel, delta)
+			resolveAccelerationForces(wheel, delta)
+			
+	if wheelsOnTheGround == 0:
+		body.apply_torque(body.global_rotation.z * body.global_transform.basis.z * 200 * -1)
+		body.apply_torque(body.global_rotation.x * body.global_transform.basis.x * 300 * -1)
+		body.apply_torque(body.global_transform.basis.y * 200 * steeringAxis * -1)
 
 func resolveWheelPositions(wheel):
 	var raycast: RayCast3D = wheel.raycast
@@ -114,6 +131,9 @@ func resolveFrictionForces(wheel: Dictionary, delta: float):
 #	DebugDraw3D.draw_arrow(wheel.raycast.get_collision_point(), wheel.raycast.get_collision_point() + direction * x_force, Color.CORAL, 0.1, true)
 
 func resolveAccelerationForces(wheel: Dictionary, delta: float):
+	if health <= 0:
+		return
+
 	var destination = wheel.raycast.get_collision_point()
 	var direction = wheel.raycast.global_transform.basis.z
 	var point = Vector3(destination.x, destination.y, destination.z)
@@ -122,15 +142,11 @@ func resolveAccelerationForces(wheel: Dictionary, delta: float):
 	
 	if wheel.traction and body.linear_velocity.length() <= maxSpeed * (turboMaxSpeedModifier if turbo else 1):
 		body.apply_force(direction * force, point - body.global_position)
-		
-#		DebugDraw3D.draw_arrow(point, point + (direction * force), Color.TURQUOISE, 0.1, true)
-	
-#	DebugDraw3D.draw_arrow(point, point + (direction * force), Color.GREEN, 0.1, true)
-	
-var mino = 1
-var minl = 1
 
 func resolveSuspensionForces(wheel: Dictionary, delta: float):
+	if health <= 0:
+		return
+		
 	var raycast: RayCast3D = wheel.raycast
 	var suspensionDirection = raycast.global_transform.basis.y
 	var origin = raycast.global_position
@@ -162,3 +178,35 @@ func resolveSuspensionForces(wheel: Dictionary, delta: float):
 
 func getPointVelocity(object: RigidBody3D, point: Vector3):
 	return object.linear_velocity + object.angular_velocity.cross(point - object.global_position)
+	
+func onBodyCollision(node: Node3D):
+	var collidingCar = node.get_parent()
+	var collidingSpeed = Vector3.ZERO
+	
+	if collidingCar is CarWrapper:
+		collidingSpeed -= node.linear_velocity
+		
+		if body.linear_velocity.length_squared() < node.linear_velocity.length_squared():
+			var velocityDifference = body.linear_velocity - node.linear_velocity
+			# play hit sound
+			if velocityDifference.length() > 15:
+				# got hit hard
+				health -= 1
+			elif rearBumper.get_overlapping_areas().size() > 0 and velocityDifference.length() > 5:
+				# hit from behind
+				# play critical hit sound
+				health -= 1
+		else:
+			# hit another car
+			# play hit sound
+			# maybe force car who hit to the ground to avoid self flipping
+			body.apply_impulse(Vector3.DOWN * 100)
+			pass
+	
+		
+	elif body.linear_velocity.length() > 10 and roof.get_overlapping_bodies().size() > 0:
+		# roof hit
+		health -= 1
+		
+	print(health)
+	

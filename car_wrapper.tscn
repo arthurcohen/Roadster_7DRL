@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbo0hpq4xjl0a"]
+[gd_scene load_steps=8 format=3 uid="uid://dbo0hpq4xjl0a"]
 
 [ext_resource type="Script" path="res://car_wrapper.gd" id="1_uamjf"]
 [ext_resource type="PackedScene" uid="uid://p2rivk6jr4f" path="res://wheel.tscn" id="2_1y8qi"]
@@ -10,8 +10,14 @@ albedo_color = Color(1, 0.211765, 0.211765, 1)
 material = SubResource("StandardMaterial3D_fthlw")
 size = Vector3(2, 1, 4)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mkqlw"]
-size = Vector3(1.8, 0.9, 3.8)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_lyicq"]
+points = PackedVector3Array(1, 0.5, 2, 1, -0.5, 1.7, -1, -0.5, 1.7, -1, 0.5, 2, -1, -0.5, -1.7, -1, 0.5, -2, 1, 0.5, -2, 1, -0.5, -1.7, 2.08165e-12, 0.75, 2, 2.08165e-12, 0.75, -2, 1, -0.3, 2, -1, -0.3, 2, 1, -0.3, -2, -1, -0.3, -2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v82h3"]
+size = Vector3(2.2, 0.8, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h0dy7"]
+size = Vector3(1.51151, 0.42771, 2.47195)
 
 [node name="CarWrapper" type="Node3D"]
 script = ExtResource("1_uamjf")
@@ -22,12 +28,14 @@ collision_mask = 3
 mass = 100.0
 center_of_mass_mode = 1
 center_of_mass = Vector3(2.08167e-16, -1, 2.08167e-16)
+max_contacts_reported = 3
+contact_monitor = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
 mesh = SubResource("BoxMesh_kaasd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
-shape = SubResource("BoxShape3D_mkqlw")
+shape = SubResource("ConvexPolygonShape3D_lyicq")
 
 [node name="Wheels" type="Node3D" parent="Body"]
 
@@ -58,3 +66,28 @@ target_position = Vector3(0, -2, 0)
 collision_mask = 5
 
 [node name="Wheel" parent="Body/Wheels/RL" instance=ExtResource("2_1y8qi")]
+
+[node name="RearBumperArea" type="Area3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, -1.7)
+collision_layer = 32
+collision_mask = 36
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/RearBumperArea"]
+shape = SubResource("BoxShape3D_v82h3")
+
+[node name="FrontBumperArea" type="Area3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 1.7)
+collision_layer = 32
+collision_mask = 36
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/FrontBumperArea"]
+shape = SubResource("BoxShape3D_v82h3")
+
+[node name="RoofArea" type="Area3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.100994, 0)
+collision_layer = 32
+collision_mask = 53
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/RoofArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.593336, 0)
+shape = SubResource("BoxShape3D_h0dy7")
