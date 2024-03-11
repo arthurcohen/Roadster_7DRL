@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://dbo0hpq4xjl0a"]
 
 [ext_resource type="Script" path="res://car_wrapper.gd" id="1_uamjf"]
-[ext_resource type="PackedScene" path="res://wheel.tscn" id="2_1y8qi"]
+[ext_resource type="PackedScene" uid="uid://p2rivk6jr4f" path="res://wheel.tscn" id="2_1y8qi"]
 [ext_resource type="AudioStream" uid="uid://dxsoss0uqbk1g" path="res://audio/sfx/592388__magnuswaker__car-crash-with-glass.wav" id="3_g3nub"]
 [ext_resource type="AudioStream" uid="uid://d3jqli0c5eryn" path="res://audio/sfx/703247__xkeril__big-falling-debris-crash.wav" id="4_r0g5a"]
 [ext_resource type="AudioStream" uid="uid://dntbjauixerc4" path="res://audio/sfx/703248__xkeril__fall-debris-crash.wav" id="4_wmio5"]

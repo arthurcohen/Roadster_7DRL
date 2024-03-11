@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low Poly Khafre
+* source:	https://sketchfab.com/3d-models/low-poly-khafre-be7f0d81bb3f43fa9e8acb9b65ad5985
+* author:	dvnc.tech (https://sketchfab.com/dvnc.tech)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low Poly Khafre" (https://sketchfab.com/3d-models/low-poly-khafre-be7f0d81bb3f43fa9e8acb9b65ad5985) by dvnc.tech (https://sketchfab.com/dvnc.tech) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

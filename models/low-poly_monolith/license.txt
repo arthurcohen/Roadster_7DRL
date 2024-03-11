@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low-Poly Monolith
+* source:	https://sketchfab.com/3d-models/low-poly-monolith-fd104a99606d48e2ac0ad735cb575958
+* author:	dvnc.tech (https://sketchfab.com/dvnc.tech)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low-Poly Monolith" (https://sketchfab.com/3d-models/low-poly-monolith-fd104a99606d48e2ac0ad735cb575958) by dvnc.tech (https://sketchfab.com/dvnc.tech) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
