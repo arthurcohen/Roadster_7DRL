@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low Poly Egyptian Long-Building
+* source:	https://sketchfab.com/3d-models/low-poly-egyptian-long-building-ac3b3872b6484edf9b909f1fadcb30e7
+* author:	dvnc.tech (https://sketchfab.com/dvnc.tech)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low Poly Egyptian Long-Building" (https://sketchfab.com/3d-models/low-poly-egyptian-long-building-ac3b3872b6484edf9b909f1fadcb30e7) by dvnc.tech (https://sketchfab.com/dvnc.tech) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

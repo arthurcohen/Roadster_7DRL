@@ -25,6 +25,10 @@ window/size/viewport_width=1920
 window/size/viewport_height=1082
 window/stretch/mode="viewport"
 
+[filesystem]
+
+import/fbx/enabled=false
+
 [input]
 
 gas={
