@@ -14,6 +14,8 @@ extends MeshInstance3D
 @onready var obelisk: Node3D = get_node("Monolith")
 @onready var ruins: Node3D = get_node("Ruins")
 
+var terrain_mesh: Mesh
+var heightmap_shape = HeightMapShape3D.new()
 var surface_tool: SurfaceTool = SurfaceTool.new()
 var interest_spots: PackedVector3Array = []
 
@@ -83,15 +85,14 @@ func _generate():
  
 	surface_tool.generate_normals()
 	
-	self.mesh = surface_tool.commit()
+	terrain_mesh = surface_tool.commit()
+	self.mesh = terrain_mesh
 
-	var heightmapShape = HeightMapShape3D.new()
+	heightmap_shape.map_width = size
+	heightmap_shape.map_depth = size
+	heightmap_shape.map_data = heightmap
 	
-	heightmapShape.map_width = size
-	heightmapShape.map_depth = size
-	heightmapShape.map_data = heightmap
-	
-	collision_shape.shape = heightmapShape
+	collision_shape.shape = heightmap_shape
 	
 	var interest_spots: Array[Vector3] = [] 
 	interest_spots.clear()
@@ -149,3 +150,12 @@ func _get_position(i: int, j: int) -> Vector2:
 	var z = j - (size - 1.0)/2.0
 	
 	return Vector2(x, z)
+
+func _notification(what:int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			self.mesh = null
+			collision_shape.shape = null
+		NOTIFICATION_EDITOR_POST_SAVE:
+			self.mesh = terrain_mesh
+			collision_shape.shape = heightmap_shape
